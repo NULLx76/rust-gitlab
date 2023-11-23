@@ -454,46 +454,18 @@ enum ProjectName<'a> {
 impl<'a> ProjectName<'a> {
     fn with_name(self, name: Cow<'a, str>) -> Self {
         match self {
-            ProjectName::Name {
-                ..
-            } => {
-                ProjectName::Name {
-                    name,
-                }
-            },
-            ProjectName::NameAndPath {
-                path, ..
-            }
-            | ProjectName::Path {
-                path,
-            } => {
-                ProjectName::NameAndPath {
-                    name,
-                    path,
-                }
+            ProjectName::Name { .. } => ProjectName::Name { name },
+            ProjectName::NameAndPath { path, .. } | ProjectName::Path { path } => {
+                ProjectName::NameAndPath { name, path }
             },
         }
     }
 
     fn with_path(self, path: Cow<'a, str>) -> Self {
         match self {
-            ProjectName::Path {
-                ..
-            } => {
-                ProjectName::Path {
-                    path,
-                }
-            },
-            ProjectName::NameAndPath {
-                name, ..
-            }
-            | ProjectName::Name {
-                name,
-            } => {
-                ProjectName::NameAndPath {
-                    name,
-                    path,
-                }
+            ProjectName::Path { .. } => ProjectName::Path { path },
+            ProjectName::NameAndPath { name, .. } | ProjectName::Name { name } => {
+                ProjectName::NameAndPath { name, path }
             },
         }
     }
@@ -783,9 +755,7 @@ impl<'a> CreateProjectBuilder<'a> {
         self.name_and_path = Some(if let Some(name_and_path) = self.name_and_path.take() {
             name_and_path.with_name(name)
         } else {
-            ProjectName::Name {
-                name,
-            }
+            ProjectName::Name { name }
         });
         self
     }
@@ -802,9 +772,7 @@ impl<'a> CreateProjectBuilder<'a> {
         self.name_and_path = Some(if let Some(name_and_path) = self.name_and_path.take() {
             name_and_path.with_path(path)
         } else {
-            ProjectName::Path {
-                path,
-            }
+            ProjectName::Path { path }
         });
         self
     }
@@ -880,20 +848,13 @@ impl<'a> Endpoint for CreateProject<'a> {
         let mut params = FormParams::default();
 
         match &self.name_and_path {
-            ProjectName::Name {
-                name,
-            } => {
+            ProjectName::Name { name } => {
                 params.push("name", name);
             },
-            ProjectName::Path {
-                path,
-            } => {
+            ProjectName::Path { path } => {
                 params.push("path", path);
             },
-            ProjectName::NameAndPath {
-                name,
-                path,
-            } => {
+            ProjectName::NameAndPath { name, path } => {
                 params.push("name", name).push("path", path);
             },
         }

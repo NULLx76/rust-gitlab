@@ -19,6 +19,7 @@ pub mod deploy_keys;
 pub mod deployments;
 mod edit;
 pub mod environments;
+mod fork;
 pub mod hooks;
 pub mod issues;
 pub mod jobs;
@@ -92,3 +93,7 @@ pub use self::unarchive::UnarchiveProjectBuilderError;
 pub use self::unshare::UnshareProject;
 pub use self::unshare::UnshareProjectBuilder;
 pub use self::unshare::UnshareProjectBuilderError;
+
+pub use self::fork::ForkProject;
+pub use self::fork::ForkProjectBuilder;
+pub use self::fork::ForkProjectBuilderError;

@@ -133,9 +133,7 @@ where
 {
     /// Create an API error in a client error.
     pub fn client(source: E) -> Self {
-        ApiError::Client {
-            source,
-        }
+        ApiError::Client { source }
     }
 
     /// Wrap a client error in another wrapper.
@@ -145,105 +143,25 @@ where
         W: Error + Send + Sync + 'static,
     {
         match self {
-            Self::Client {
-                source,
-            } => ApiError::client(f(source)),
-            Self::UrlParse {
-                source,
-            } => {
-                ApiError::UrlParse {
-                    source,
-                }
-            },
-            Self::Auth {
-                source,
-            } => {
-                ApiError::Auth {
-                    source,
-                }
-            },
-            Self::Body {
-                source,
-            } => {
-                ApiError::Body {
-                    source,
-                }
-            },
-            Self::Json {
-                source,
-            } => {
-                ApiError::Json {
-                    source,
-                }
-            },
-            Self::MovedPermanently {
-                location,
-            } => {
-                ApiError::MovedPermanently {
-                    location,
-                }
-            },
-            Self::Gitlab {
-                msg,
-            } => {
-                ApiError::Gitlab {
-                    msg,
-                }
-            },
-            Self::GitlabService {
-                status,
-                data,
-            } => {
-                ApiError::GitlabService {
-                    status,
-                    data,
-                }
-            },
-            Self::GitlabObject {
-                obj,
-            } => {
-                ApiError::GitlabObject {
-                    obj,
-                }
-            },
-            Self::GitlabUnrecognized {
-                obj,
-            } => {
-                ApiError::GitlabUnrecognized {
-                    obj,
-                }
-            },
-            Self::DataType {
-                source,
-                typename,
-            } => {
-                ApiError::DataType {
-                    source,
-                    typename,
-                }
-            },
-            Self::Pagination {
-                source,
-            } => {
-                ApiError::Pagination {
-                    source,
-                }
-            },
-            Self::UnsupportedUrlBase {
-                url_base,
-            } => {
-                ApiError::UnsupportedUrlBase {
-                    url_base,
-                }
-            },
+            Self::Client { source } => ApiError::client(f(source)),
+            Self::UrlParse { source } => ApiError::UrlParse { source },
+            Self::Auth { source } => ApiError::Auth { source },
+            Self::Body { source } => ApiError::Body { source },
+            Self::Json { source } => ApiError::Json { source },
+            Self::MovedPermanently { location } => ApiError::MovedPermanently { location },
+            Self::Gitlab { msg } => ApiError::Gitlab { msg },
+            Self::GitlabService { status, data } => ApiError::GitlabService { status, data },
+            Self::GitlabObject { obj } => ApiError::GitlabObject { obj },
+            Self::GitlabUnrecognized { obj } => ApiError::GitlabUnrecognized { obj },
+            Self::DataType { source, typename } => ApiError::DataType { source, typename },
+            Self::Pagination { source } => ApiError::Pagination { source },
+            Self::UnsupportedUrlBase { url_base } => ApiError::UnsupportedUrlBase { url_base },
         }
     }
 
     pub(crate) fn moved_permanently(raw_location: Option<&http::HeaderValue>) -> Self {
         let location = raw_location.map(|v| String::from_utf8_lossy(v.as_bytes()).into());
-        Self::MovedPermanently {
-            location,
-        }
+        Self::MovedPermanently { location }
     }
 
     pub(crate) fn server_error(status: http::StatusCode, body: &bytes::Bytes) -> Self {
@@ -260,18 +178,14 @@ where
 
         if let Some(error_value) = error_value {
             if let Some(msg) = error_value.as_str() {
-                ApiError::Gitlab {
-                    msg: msg.into(),
-                }
+                ApiError::Gitlab { msg: msg.into() }
             } else {
                 ApiError::GitlabObject {
                     obj: error_value.clone(),
                 }
             }
         } else {
-            ApiError::GitlabUnrecognized {
-                obj: value,
-            }
+            ApiError::GitlabUnrecognized { obj: value }
         }
     }
 
@@ -283,9 +197,7 @@ where
     }
 
     pub(crate) fn unsupported_url_base(url_base: UrlBase) -> Self {
-        Self::UnsupportedUrlBase {
-            url_base,
-        }
+        Self::UnsupportedUrlBase { url_base }
     }
 }
 
@@ -307,10 +219,7 @@ mod tests {
         });
 
         let err: ApiError<MyError> = ApiError::from_gitlab(obj);
-        if let ApiError::Gitlab {
-            msg,
-        } = err
-        {
+        if let ApiError::Gitlab { msg } = err {
             assert_eq!(msg, "error contents");
         } else {
             panic!("unexpected error: {}", err);
@@ -324,10 +233,7 @@ mod tests {
         });
 
         let err: ApiError<MyError> = ApiError::from_gitlab(obj);
-        if let ApiError::Gitlab {
-            msg,
-        } = err
-        {
+        if let ApiError::Gitlab { msg } = err {
             assert_eq!(msg, "error contents");
         } else {
             panic!("unexpected error: {}", err);
@@ -344,10 +250,7 @@ mod tests {
         });
 
         let err: ApiError<MyError> = ApiError::from_gitlab(obj);
-        if let ApiError::GitlabObject {
-            obj,
-        } = err
-        {
+        if let ApiError::GitlabObject { obj } = err {
             assert_eq!(obj, err_obj);
         } else {
             panic!("unexpected error: {}", err);
@@ -361,10 +264,7 @@ mod tests {
         });
 
         let err: ApiError<MyError> = ApiError::from_gitlab(err_obj.clone());
-        if let ApiError::GitlabUnrecognized {
-            obj,
-        } = err
-        {
+        if let ApiError::GitlabUnrecognized { obj } = err {
             assert_eq!(obj, err_obj);
         } else {
             panic!("unexpected error: {}", err);

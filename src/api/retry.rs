@@ -48,10 +48,7 @@ fn should_backoff<E>(err: &api::ApiError<E>) -> bool
 where
     E: StdError + Send + Sync + 'static,
 {
-    if let api::ApiError::GitlabService {
-        status, ..
-    } = err
-    {
+    if let api::ApiError::GitlabService { status, .. } = err {
         status.is_server_error()
     } else {
         false
@@ -71,27 +68,25 @@ impl Backoff {
     {
         iter::repeat(())
             .take(self.limit)
-            .scan(self.init, |timeout, _| {
-                match tryf() {
-                    Ok(rsp) => {
-                        if rsp.status().is_server_error() {
-                            thread::sleep(*timeout);
-                            *timeout = timeout.mul_f64(self.scale);
-                            Some(None)
-                        } else {
-                            Some(Some(Ok(rsp)))
-                        }
-                    },
-                    Err(err) => {
-                        if should_backoff(&err) {
-                            thread::sleep(*timeout);
-                            *timeout = timeout.mul_f64(self.scale);
-                            Some(None)
-                        } else {
-                            Some(Some(Err(err.map_client(Error::inner))))
-                        }
-                    },
-                }
+            .scan(self.init, |timeout, _| match tryf() {
+                Ok(rsp) => {
+                    if rsp.status().is_server_error() {
+                        thread::sleep(*timeout);
+                        *timeout = timeout.mul_f64(self.scale);
+                        Some(None)
+                    } else {
+                        Some(Some(Ok(rsp)))
+                    }
+                },
+                Err(err) => {
+                    if should_backoff(&err) {
+                        thread::sleep(*timeout);
+                        *timeout = timeout.mul_f64(self.scale);
+                        Some(None)
+                    } else {
+                        Some(Some(Err(err.map_client(Error::inner))))
+                    }
+                },
             })
             .flatten()
             .next()
@@ -133,9 +128,7 @@ where
     }
 
     fn inner(source: E) -> Self {
-        Self::Inner {
-            source,
-        }
+        Self::Inner { source }
     }
 }
 
@@ -155,10 +148,7 @@ pub struct Client<C> {
 impl<C> Client<C> {
     /// Create a client which retries in the face of service errors with an exponential backoff.
     pub fn new(client: C, backoff: Backoff) -> Self {
-        Self {
-            client,
-            backoff,
-        }
+        Self { client, backoff }
     }
 }
 
@@ -396,10 +386,7 @@ mod test {
 
         let res: Result<DummyResult, _> = Dummy.query(&client);
         let err = res.unwrap_err();
-        if let ApiError::Gitlab {
-            msg,
-        } = err
-        {
+        if let ApiError::Gitlab { msg } = err {
             assert_eq!(msg, "dummy error message");
         } else {
             panic!("unexpected error: {}", err);

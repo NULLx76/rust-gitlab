@@ -613,9 +613,8 @@ mod tests {
     #[test]
     fn pipeline_schedule_cron_parse() {
         PipelineScheduleCron::new("0 1 * * *").unwrap();
-        let PipelineScheduleCronError::ParseError {
-            reason,
-        } = PipelineScheduleCron::new("").unwrap_err();
+        let PipelineScheduleCronError::ParseError { reason } =
+            PipelineScheduleCron::new("").unwrap_err();
         assert!(!reason.is_empty());
     }
 

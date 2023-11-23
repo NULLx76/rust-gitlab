@@ -380,17 +380,13 @@ pub struct CommaSeparatedList<T> {
 impl<T> CommaSeparatedList<T> {
     /// Create a new, empty comma-separated list.
     pub fn new() -> Self {
-        Self {
-            data: Vec::new(),
-        }
+        Self { data: Vec::new() }
     }
 }
 
 impl<T> From<Vec<T>> for CommaSeparatedList<T> {
     fn from(data: Vec<T>) -> Self {
-        Self {
-            data,
-        }
+        Self { data }
     }
 }
 

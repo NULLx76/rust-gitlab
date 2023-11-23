@@ -139,10 +139,7 @@ impl SingleTestClient {
 
         client.response_map.insert(request, response);
 
-        Self {
-            client,
-            expected,
-        }
+        Self { client, expected }
     }
 
     pub fn new_json<T>(expected: ExpectedUrl, data: &T) -> Self
@@ -229,18 +226,12 @@ enum Page {
 impl Page {
     fn range(self) -> Range<usize> {
         match self {
-            Page::ByNumber {
-                number,
-                size,
-            } => {
+            Page::ByNumber { number, size } => {
                 assert_ne!(number, 0);
                 let start = size * (number - 1);
                 start..start + size
             },
-            Page::ByKeyset {
-                start,
-                size,
-            } => start..start + size,
+            Page::ByKeyset { start, size } => start..start + size,
         }
     }
 }

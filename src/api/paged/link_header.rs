@@ -49,10 +49,7 @@ impl<'a> LinkHeader<'a> {
             })
             .collect::<Result<Vec<_>, LinkHeaderParseError>>()?;
 
-        Ok(Self {
-            url,
-            params,
-        })
+        Ok(Self { url, params })
     }
 }
 
@@ -77,9 +74,7 @@ pub enum LinkHeaderParseError {
 
 impl LinkHeaderParseError {
     fn invalid_header(source: reqwest::header::ToStrError) -> Self {
-        Self::InvalidHeader {
-            source,
-        }
+        Self::InvalidHeader { source }
     }
 }
 

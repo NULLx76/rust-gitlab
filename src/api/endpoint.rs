@@ -199,10 +199,7 @@ mod tests {
 
         let res: Result<DummyResult, _> = Dummy.query(&client);
         let err = res.unwrap_err();
-        if let ApiError::GitlabService {
-            status, ..
-        } = err
-        {
+        if let ApiError::GitlabService { status, .. } = err {
             assert_eq!(status, http::StatusCode::OK);
         } else {
             panic!("unexpected error: {}", err);
@@ -216,10 +213,7 @@ mod tests {
 
         let res: Result<DummyResult, _> = Dummy.query(&client);
         let err = res.unwrap_err();
-        if let ApiError::GitlabService {
-            status, ..
-        } = err
-        {
+        if let ApiError::GitlabService { status, .. } = err {
             assert_eq!(status, http::StatusCode::OK);
         } else {
             panic!("unexpected error: {}", err);
@@ -237,10 +231,7 @@ mod tests {
 
         let res: Result<DummyResult, _> = Dummy.query(&client);
         let err = res.unwrap_err();
-        if let ApiError::GitlabService {
-            status, ..
-        } = err
-        {
+        if let ApiError::GitlabService { status, .. } = err {
             assert_eq!(status, http::StatusCode::NOT_FOUND);
         } else {
             panic!("unexpected error: {}", err);
@@ -263,10 +254,7 @@ mod tests {
 
         let res: Result<DummyResult, _> = Dummy.query(&client);
         let err = res.unwrap_err();
-        if let ApiError::Gitlab {
-            msg,
-        } = err
-        {
+        if let ApiError::Gitlab { msg } = err {
             assert_eq!(msg, "dummy error message");
         } else {
             panic!("unexpected error: {}", err);
@@ -289,10 +277,7 @@ mod tests {
 
         let res: Result<DummyResult, _> = Dummy.query(&client);
         let err = res.unwrap_err();
-        if let ApiError::Gitlab {
-            msg,
-        } = err
-        {
+        if let ApiError::Gitlab { msg } = err {
             assert_eq!(msg, "dummy error message");
         } else {
             panic!("unexpected error: {}", err);
@@ -313,10 +298,7 @@ mod tests {
 
         let res: Result<DummyResult, _> = Dummy.query(&client);
         let err = res.unwrap_err();
-        if let ApiError::GitlabUnrecognized {
-            obj,
-        } = err
-        {
+        if let ApiError::GitlabUnrecognized { obj } = err {
             assert_eq!(obj, err_obj);
         } else {
             panic!("unexpected error: {}", err);
@@ -335,11 +317,7 @@ mod tests {
 
         let res: Result<DummyResult, _> = Dummy.query(&client);
         let err = res.unwrap_err();
-        if let ApiError::DataType {
-            source,
-            typename,
-        } = err
-        {
+        if let ApiError::DataType { source, typename } = err {
             assert_eq!(source.to_string(), "missing field `value`");
             assert_eq!(typename, "gitlab::api::endpoint::tests::DummyResult");
         } else {

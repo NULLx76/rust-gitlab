@@ -17,9 +17,7 @@ pub struct Ignore<E> {
 
 /// Ignore the resulting data from an endpoint.
 pub fn ignore<E>(endpoint: E) -> Ignore<E> {
-    Ignore {
-        endpoint,
-    }
+    Ignore { endpoint }
 }
 
 impl<E, C> Query<(), C> for Ignore<E>
@@ -150,10 +148,7 @@ mod tests {
         let client = SingleTestClient::new_raw(endpoint, "");
 
         let err = api::ignore(Dummy).query(&client).unwrap_err();
-        if let ApiError::GitlabService {
-            status, ..
-        } = err
-        {
+        if let ApiError::GitlabService { status, .. } = err {
             assert_eq!(status, http::StatusCode::NOT_FOUND);
         } else {
             panic!("unexpected error: {}", err);
@@ -175,10 +170,7 @@ mod tests {
         );
 
         let err = api::ignore(Dummy).query(&client).unwrap_err();
-        if let ApiError::Gitlab {
-            msg,
-        } = err
-        {
+        if let ApiError::Gitlab { msg } = err {
             assert_eq!(msg, "dummy error message");
         } else {
             panic!("unexpected error: {}", err);
@@ -200,10 +192,7 @@ mod tests {
         );
 
         let err = api::ignore(Dummy).query(&client).unwrap_err();
-        if let ApiError::Gitlab {
-            msg,
-        } = err
-        {
+        if let ApiError::Gitlab { msg } = err {
             assert_eq!(msg, "dummy error message");
         } else {
             panic!("unexpected error: {}", err);
@@ -223,10 +212,7 @@ mod tests {
         let client = SingleTestClient::new_json(endpoint, &err_obj);
 
         let err = api::ignore(Dummy).query(&client).unwrap_err();
-        if let ApiError::GitlabUnrecognized {
-            obj,
-        } = err
-        {
+        if let ApiError::GitlabUnrecognized { obj } = err {
             assert_eq!(obj, err_obj);
         } else {
             panic!("unexpected error: {}", err);

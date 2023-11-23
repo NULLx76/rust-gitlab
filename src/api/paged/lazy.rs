@@ -59,8 +59,8 @@ where
             pagination: self.pagination,
         };
         let iter = LazilyPagedIter::new(borrowed, client);
-        futures_util::stream::unfold(iter, |mut iter| {
-            async move { iter.next_async().await.map(|item| (item, iter)) }
+        futures_util::stream::unfold(iter, |mut iter| async move {
+            iter.next_async().await.map(|item| (item, iter))
         })
     }
 
@@ -75,8 +75,8 @@ where
         C: AsyncClient + Sync,
     {
         let iter = LazilyPagedIter::new(self, client);
-        futures_util::stream::unfold(iter, |mut iter| {
-            async move { iter.next_async().await.map(|item| (item, iter)) }
+        futures_util::stream::unfold(iter, |mut iter| async move {
+            iter.next_async().await.map(|item| (item, iter))
         })
     }
 }
@@ -428,8 +428,8 @@ where
     where
         E: 'a,
     {
-        futures_util::stream::unfold(self, |mut iter| {
-            async move { iter.next_async().await.map(|item| (item, iter)) }
+        futures_util::stream::unfold(self, |mut iter| async move {
+            iter.next_async().await.map(|item| (item, iter))
         })
     }
 }
@@ -487,10 +487,7 @@ mod tests {
             .iter(&client)
             .collect();
         let err = res.unwrap_err();
-        if let ApiError::GitlabService {
-            status, ..
-        } = err
-        {
+        if let ApiError::GitlabService { status, .. } = err {
             assert_eq!(status, http::StatusCode::OK);
         } else {
             panic!("unexpected error: {}", err);
@@ -512,10 +509,7 @@ mod tests {
             .try_collect()
             .await;
         let err = res.unwrap_err();
-        if let ApiError::GitlabService {
-            status, ..
-        } = err
-        {
+        if let ApiError::GitlabService { status, .. } = err {
             assert_eq!(status, http::StatusCode::OK);
         } else {
             panic!("unexpected error: {}", err);
@@ -537,10 +531,7 @@ mod tests {
             .iter(&client)
             .collect();
         let err = res.unwrap_err();
-        if let ApiError::GitlabService {
-            status, ..
-        } = err
-        {
+        if let ApiError::GitlabService { status, .. } = err {
             assert_eq!(status, http::StatusCode::NOT_FOUND);
         } else {
             panic!("unexpected error: {}", err);
@@ -563,10 +554,7 @@ mod tests {
             .try_collect()
             .await;
         let err = res.unwrap_err();
-        if let ApiError::GitlabService {
-            status, ..
-        } = err
-        {
+        if let ApiError::GitlabService { status, .. } = err {
             assert_eq!(status, http::StatusCode::NOT_FOUND);
         } else {
             panic!("unexpected error: {}", err);
@@ -593,10 +581,7 @@ mod tests {
             .iter(&client)
             .collect();
         let err = res.unwrap_err();
-        if let ApiError::Gitlab {
-            msg,
-        } = err
-        {
+        if let ApiError::Gitlab { msg } = err {
             assert_eq!(msg, "dummy error message");
         } else {
             panic!("unexpected error: {}", err);
@@ -624,10 +609,7 @@ mod tests {
             .try_collect()
             .await;
         let err = res.unwrap_err();
-        if let ApiError::Gitlab {
-            msg,
-        } = err
-        {
+        if let ApiError::Gitlab { msg } = err {
             assert_eq!(msg, "dummy error message");
         } else {
             panic!("unexpected error: {}", err);
@@ -654,10 +636,7 @@ mod tests {
             .iter(&client)
             .collect();
         let err = res.unwrap_err();
-        if let ApiError::Gitlab {
-            msg,
-        } = err
-        {
+        if let ApiError::Gitlab { msg } = err {
             assert_eq!(msg, "dummy error message");
         } else {
             panic!("unexpected error: {}", err);
@@ -685,10 +664,7 @@ mod tests {
             .try_collect()
             .await;
         let err = res.unwrap_err();
-        if let ApiError::Gitlab {
-            msg,
-        } = err
-        {
+        if let ApiError::Gitlab { msg } = err {
             assert_eq!(msg, "dummy error message");
         } else {
             panic!("unexpected error: {}", err);
@@ -713,10 +689,7 @@ mod tests {
             .iter(&client)
             .collect();
         let err = res.unwrap_err();
-        if let ApiError::GitlabUnrecognized {
-            obj,
-        } = err
-        {
+        if let ApiError::GitlabUnrecognized { obj } = err {
             assert_eq!(obj, err_obj);
         } else {
             panic!("unexpected error: {}", err);
@@ -742,10 +715,7 @@ mod tests {
             .try_collect()
             .await;
         let err = res.unwrap_err();
-        if let ApiError::GitlabUnrecognized {
-            obj,
-        } = err
-        {
+        if let ApiError::GitlabUnrecognized { obj } = err {
             assert_eq!(obj, err_obj);
         } else {
             panic!("unexpected error: {}", err);
@@ -759,17 +729,9 @@ mod tests {
             .paginated(true)
             .build()
             .unwrap();
-        let client = PagedTestClient::new_raw(
-            endpoint,
-            (0..=255).map(|value| {
-                DummyResult {
-                    value,
-                }
-            }),
-        );
-        let query = Dummy {
-            with_keyset: false,
-        };
+        let client =
+            PagedTestClient::new_raw(endpoint, (0..=255).map(|value| DummyResult { value }));
+        let query = Dummy { with_keyset: false };
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::Limit(25))
             .iter(&client)
@@ -788,17 +750,9 @@ mod tests {
             .paginated(true)
             .build()
             .unwrap();
-        let client = PagedTestClient::new_raw(
-            endpoint,
-            (0..=255).map(|value| {
-                DummyResult {
-                    value,
-                }
-            }),
-        );
-        let query = Dummy {
-            with_keyset: false,
-        };
+        let client =
+            PagedTestClient::new_raw(endpoint, (0..=255).map(|value| DummyResult { value }));
+        let query = Dummy { with_keyset: false };
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::Limit(25))
             .iter_async(&client)
@@ -818,17 +772,9 @@ mod tests {
             .paginated(true)
             .build()
             .unwrap();
-        let client = PagedTestClient::new_raw(
-            endpoint,
-            (0..=255).map(|value| {
-                DummyResult {
-                    value,
-                }
-            }),
-        );
-        let query = Dummy {
-            with_keyset: false,
-        };
+        let client =
+            PagedTestClient::new_raw(endpoint, (0..=255).map(|value| DummyResult { value }));
+        let query = Dummy { with_keyset: false };
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::Limit(25))
             .iter(&client)
@@ -848,17 +794,9 @@ mod tests {
             .paginated(true)
             .build()
             .unwrap();
-        let client = PagedTestClient::new_raw(
-            endpoint,
-            (0..=255).map(|value| {
-                DummyResult {
-                    value,
-                }
-            }),
-        );
-        let query = Dummy {
-            with_keyset: false,
-        };
+        let client =
+            PagedTestClient::new_raw(endpoint, (0..=255).map(|value| DummyResult { value }));
+        let query = Dummy { with_keyset: false };
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::Limit(25))
             .iter(&client)
@@ -880,14 +818,8 @@ mod tests {
             .paginated(true)
             .build()
             .unwrap();
-        let client = PagedTestClient::new_raw(
-            endpoint,
-            (0..=255).map(|value| {
-                DummyResult {
-                    value,
-                }
-            }),
-        );
+        let client =
+            PagedTestClient::new_raw(endpoint, (0..=255).map(|value| DummyResult { value }));
         let query = Dummy::default();
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::All)
@@ -907,14 +839,8 @@ mod tests {
             .paginated(true)
             .build()
             .unwrap();
-        let client = PagedTestClient::new_raw(
-            endpoint,
-            (0..=255).map(|value| {
-                DummyResult {
-                    value,
-                }
-            }),
-        );
+        let client =
+            PagedTestClient::new_raw(endpoint, (0..=255).map(|value| DummyResult { value }));
         let query = Dummy::default();
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::All)
@@ -935,17 +861,9 @@ mod tests {
             .paginated(true)
             .build()
             .unwrap();
-        let client = PagedTestClient::new_raw(
-            endpoint,
-            (0..=255).map(|value| {
-                DummyResult {
-                    value,
-                }
-            }),
-        );
-        let query = Dummy {
-            with_keyset: true,
-        };
+        let client =
+            PagedTestClient::new_raw(endpoint, (0..=255).map(|value| DummyResult { value }));
+        let query = Dummy { with_keyset: true };
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::Limit(25))
             .iter(&client)
@@ -964,17 +882,9 @@ mod tests {
             .paginated(true)
             .build()
             .unwrap();
-        let client = PagedTestClient::new_raw(
-            endpoint,
-            (0..=255).map(|value| {
-                DummyResult {
-                    value,
-                }
-            }),
-        );
-        let query = Dummy {
-            with_keyset: true,
-        };
+        let client =
+            PagedTestClient::new_raw(endpoint, (0..=255).map(|value| DummyResult { value }));
+        let query = Dummy { with_keyset: true };
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::Limit(25))
             .iter_async(&client)
@@ -994,17 +904,9 @@ mod tests {
             .paginated(true)
             .build()
             .unwrap();
-        let client = PagedTestClient::new_raw(
-            endpoint,
-            (0..=255).map(|value| {
-                DummyResult {
-                    value,
-                }
-            }),
-        );
-        let query = Dummy {
-            with_keyset: true,
-        };
+        let client =
+            PagedTestClient::new_raw(endpoint, (0..=255).map(|value| DummyResult { value }));
+        let query = Dummy { with_keyset: true };
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::All)
             .iter(&client)
@@ -1023,17 +925,9 @@ mod tests {
             .paginated(true)
             .build()
             .unwrap();
-        let client = PagedTestClient::new_raw(
-            endpoint,
-            (0..=255).map(|value| {
-                DummyResult {
-                    value,
-                }
-            }),
-        );
-        let query = Dummy {
-            with_keyset: true,
-        };
+        let client =
+            PagedTestClient::new_raw(endpoint, (0..=255).map(|value| DummyResult { value }));
+        let query = Dummy { with_keyset: true };
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::All)
             .iter_async(&client)
@@ -1053,17 +947,9 @@ mod tests {
             .add_query_params(&[("pagination", "keyset"), ("per_page", "100")])
             .build()
             .unwrap();
-        let data: Vec<_> = (0..=255)
-            .map(|value| {
-                DummyResult {
-                    value,
-                }
-            })
-            .collect();
+        let data: Vec<_> = (0..=255).map(|value| DummyResult { value }).collect();
         let client = SingleTestClient::new_raw(endpoint, serde_json::to_vec(&data).unwrap());
-        let query = Dummy {
-            with_keyset: true,
-        };
+        let query = Dummy { with_keyset: true };
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::Limit(300))
             .iter(&client)
@@ -1082,17 +968,9 @@ mod tests {
             .add_query_params(&[("pagination", "keyset"), ("per_page", "100")])
             .build()
             .unwrap();
-        let data: Vec<_> = (0..=255)
-            .map(|value| {
-                DummyResult {
-                    value,
-                }
-            })
-            .collect();
+        let data: Vec<_> = (0..=255).map(|value| DummyResult { value }).collect();
         let client = SingleTestClient::new_raw(endpoint, serde_json::to_vec(&data).unwrap());
-        let query = Dummy {
-            with_keyset: true,
-        };
+        let query = Dummy { with_keyset: true };
 
         let res: Vec<DummyResult> = api::paged(query, Pagination::Limit(300))
             .iter_async(&client)
