@@ -14,7 +14,7 @@ use bytes::Bytes;
 use derive_builder::Builder;
 use http::request::Builder as RequestBuilder;
 use http::{header, Method, Response, StatusCode};
-use serde::ser::Serialize;
+use serde::Serialize;
 use thiserror::Error;
 use url::Url;
 
