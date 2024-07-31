@@ -578,7 +578,7 @@
 
 ## Additions
   * The `api::projects::repository::branches::Branches` endpoint is now pageable.
-  * Entend type `webhooks::MergeRequestHook` with changes entry
+  * Extend type `webhooks::MergeRequestHook` with changes entry
   * The `api::projects::protected_branches::ProtectedBranches` endpoint is now pageable.
   * Extend UserState enum with Deactivated
   * Extend Hook type with fields:
