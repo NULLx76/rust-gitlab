@@ -139,7 +139,7 @@ impl ParamValue<'static> for EnableState {
     }
 }
 
-/// A strucutre for storing a name or ID where either is allowed.
+/// A structure for storing a name or ID where either is allowed.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum NameOrId<'a> {
     /// The name of the entity.

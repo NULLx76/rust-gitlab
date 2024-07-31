@@ -917,7 +917,7 @@ pub struct PipelineProjectAttrs {
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct PipelineHook {
-    /// The event which occured.
+    /// The event which occurred.
     pub object_kind: String,
     /// The pipeline.
     pub object_attributes: PipelineHookAttrs,

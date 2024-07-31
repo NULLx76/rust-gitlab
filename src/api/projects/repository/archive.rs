@@ -9,7 +9,7 @@ use derive_builder::Builder;
 use crate::api::common::NameOrId;
 use crate::api::endpoint_prelude::*;
 
-/// Vaild archive formats for getting the archive of a repository.
+/// Valid archive formats for getting the archive of a repository.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum ArchiveFormat {

@@ -56,7 +56,7 @@ pub struct EditGroupPushRule<'a> {
     #[builder(default)]
     prevent_secrets: Option<bool>,
 
-    /// Require commiter email addresses match a given regular expression.
+    /// Require committer email addresses match a given regular expression.
     #[builder(setter(into), default)]
     author_email_regex: Option<Cow<'a, str>>,
 

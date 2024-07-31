@@ -188,13 +188,13 @@ impl<'a> FilePosition<'a> {
 #[derive(Debug, Clone, Builder)]
 #[builder(setter(strip_option))]
 pub struct Position<'a> {
-    /// Tbe base commit SHA in the source branch.
+    /// The base commit SHA in the source branch.
     #[builder(setter(into))]
     base_sha: Cow<'a, str>,
-    /// Tbe base commit SHA in the target branch.
+    /// The base commit SHA in the target branch.
     #[builder(setter(into))]
     start_sha: Cow<'a, str>,
-    /// Tbe commit SHA for the HEAD of the merge request.
+    /// The commit SHA for the HEAD of the merge request.
     #[builder(setter(into))]
     head_sha: Cow<'a, str>,
     /// The position within the diff to discuss.

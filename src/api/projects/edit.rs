@@ -109,7 +109,7 @@ pub struct EditProject<'a> {
     /// Whether the default set of award emojis are shown for this project.
     #[builder(default)]
     show_default_award_emojis: Option<bool>,
-    /// Whether to allow non-members to set pipeline variables when triggering piplines or not.
+    /// Whether to allow non-members to set pipeline variables when triggering pipelines or not.
     #[builder(default)]
     restrict_user_defined_variables: Option<bool>,
     /// Whether outdated diff discussions are resolved when a merge request is updated or not.
