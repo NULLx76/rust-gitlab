@@ -18,7 +18,7 @@ use super::ParamValue;
 pub enum PackageStatus {
     /// The default filter.
     Default,
-    /// Return hidden packaegs.
+    /// Return hidden packages.
     Hidden,
     /// Return in-progress packages.
     Processing,

@@ -242,7 +242,7 @@ pub struct ContainerExpirationPolicy<'a> {
     /// Only consider containers older than this age.
     #[builder(default)]
     older_than: Option<ContainerExpirationOlderThan>,
-    /// Only apply to images with names maching a regular expression.
+    /// Only apply to images with names matching a regular expression.
     ///
     /// See the [Ruby documentation](https://ruby-doc.org/core-2.7.1/Regexp.html) for supported
     /// syntax.
@@ -400,7 +400,7 @@ impl ParamValue<'static> for SquashOption {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum BuildGitStrategy {
-    /// Clone the reopsitory every time.
+    /// Clone the repository every time.
     Clone,
     /// Fetch into an existing checkout (will clone if not available).
     Fetch,
@@ -592,7 +592,7 @@ pub struct CreateProject<'a> {
     /// Whether the default set of award emojis are shown for this project.
     #[builder(default)]
     show_default_award_emojis: Option<bool>,
-    /// Whether to allow non-members to set pipeline variables when triggering piplines or not.
+    /// Whether to allow non-members to set pipeline variables when triggering pipelines or not.
     #[builder(default)]
     restrict_user_defined_variables: Option<bool>,
     /// Whether outdated diff discussions are resolved when a merge request is updated or not.

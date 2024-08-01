@@ -161,7 +161,7 @@ impl<'a> EditIssueBuilder<'a> {
         self
     }
 
-    /// Assigne the issue to a set of users.
+    /// Assign the issue to a set of users.
     pub fn assignee_ids<I>(&mut self, iter: I) -> &mut Self
     where
         I: Iterator<Item = u64>,

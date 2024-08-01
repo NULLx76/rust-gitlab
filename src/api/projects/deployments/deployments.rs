@@ -16,11 +16,17 @@ use crate::api::ParamValue;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum DeploymentOrderBy {
+    /// Order deployments by ID.
     Id,
+    /// Order deployments by project-specific ID.
     Iid,
+    /// Order deployments by creation date.
     CreatedAt,
+    /// Order deployments by last update date.
     UpdatedAt,
+    /// Order deployments by completion date.
     FinishedAt,
+    /// Order deployments by the ref deployed.
     Ref,
 }
 
@@ -48,11 +54,17 @@ impl ParamValue<'static> for DeploymentOrderBy {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum DeploymentStatusFilter {
+    /// Only consider created deployments.
     Created,
+    /// Only consider running deployments.
     Running,
+    /// Only consider successful deployments.
     Success,
+    /// Only consider failed deployments.
     Failed,
+    /// Only consider canceled deployments.
     Canceled,
+    /// Only consider blocked deployments.
     Blocked,
 }
 

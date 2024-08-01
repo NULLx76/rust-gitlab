@@ -24,7 +24,7 @@ pub struct CreateIssue<'a> {
     ///
     /// Note: this is technically optional if `merge_request_to_resolve_discussions_of` is given,
     /// but to avoid more complicated shenanigans around choosing one or the other, this is always
-    /// marked as required. Instead, if `title` is explictly empty and
+    /// marked as required. Instead, if `title` is explicitly empty and
     /// `merge_request_to_resolve_discussions_of` is given, `title` will not be sent allowing
     /// GitLab to generate the default title.
     #[builder(setter(into))]

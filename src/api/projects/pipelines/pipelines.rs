@@ -146,7 +146,7 @@ impl ParamValue<'static> for PipelineOrderBy {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[non_exhaustive]
 pub enum PipelineSource {
-    /// A pipeline crated by pushing to a repository.
+    /// A pipeline created by pushing to a repository.
     Push,
     /// A pipeline created through the web interface.
     Web,

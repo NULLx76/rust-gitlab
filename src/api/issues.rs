@@ -341,7 +341,7 @@ pub enum IssueOrderBy {
     DueDate,
     /// Sort by relative position.
     ///
-    /// TOOD: position within what?
+    /// TODO: position within what?
     RelativePosition,
     /// Sort by priority labels.
     LabelPriority,
