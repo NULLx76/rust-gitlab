@@ -1,3 +1,7 @@
+# v0.1703.0
+
+  * No changes needed for GitLab 17.3.
+
 # v0.1702.0
 
 ## Additions
