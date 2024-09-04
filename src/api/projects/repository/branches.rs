@@ -11,6 +11,7 @@
 mod branch;
 mod branches;
 mod create;
+mod delete;
 
 pub use self::branch::Branch;
 pub use self::branch::BranchBuilder;
@@ -23,3 +24,7 @@ pub use self::branches::BranchesBuilderError;
 pub use self::create::CreateBranch;
 pub use self::create::CreateBranchBuilder;
 pub use self::create::CreateBranchBuilderError;
+
+pub use self::delete::DeleteBranch;
+pub use self::delete::DeleteBranchBuilder;
+pub use self::delete::DeleteBranchBuilderError;
