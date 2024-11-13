@@ -52,6 +52,7 @@ mod tests {
     }
 
     #[test]
+    #[should_panic]
     fn project_is_not_sufficient() {
         DeleteBranch::builder().project(1).build().unwrap();
     }
